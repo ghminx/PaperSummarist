@@ -33,15 +33,6 @@ for key, question in summary_questions.items():
 # 4. 결과 병합
 final_summary = raw_extracted | section_summaries
 
-# 5. 결과 키 확인 (선택 사항)
-print("\n✅ 최종 요약 항목 목록:")
-for k in final_summary.keys():
-    print(f"- {k}")
-    
-hwp = MakeRes('./hwp/frame.hwp', '//', final_summary)
+# 5. 한글 생성 및 저장 
+hwp = MakeRes(frame_path='./hwp/frame.hwp', sav_path='./hwp/res.hwpx', res=final_summary)
 hwp.run()
-
-
-# 1차 작업완료 프롬프트 수정 필요, 2. 전체 문서 요약 삭제할지 확인
-
-

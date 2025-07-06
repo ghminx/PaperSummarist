@@ -1,11 +1,10 @@
-import pandas as pd 
 import win32com.client as win32
-import pandas as pd
 from io import BytesIO
 import win32clipboard
 import os 
 # import psutil
 import re
+import pandas as pd 
 
 class MakeRes():
     def __init__(self, frame_path, sav_path, res) -> None:
@@ -20,6 +19,8 @@ class MakeRes():
         self.res=res
         
         self.hwp=self.hwp_open()
+        self.res=pd.DataFrame([self.res])
+        
         
     def hwp_open(self):
         hwp = win32.gencache.EnsureDispatch("hwpframe.hwpobject")
@@ -32,20 +33,20 @@ class MakeRes():
 
     # 글자 삽입
     def insert_word(self, res):
-    
         for _ in range(len(res) - 1):
             self.hwp.Run("PastePage")
 
         for i in range(len(res)):
-            for k, v in res.items():
-                    self.hwp.PutFieldText(f"{k}{{{{{i}}}}}", str(res[k]))   
+            for field in res.columns:
+                self.hwp.PutFieldText(f"{field}{{{{{i}}}}}", str(res[field].iloc[i]))  
 
-    # 클립보드 초기화    
-    def clear_clipborad(self):
-        win32clipboard.OpenClipboard()
-        win32clipboard.EmptyClipboard()
-        win32clipboard.CloseClipboard()
                 
     def run(self):
-        self.clear_clipborad
         self.insert_word(self.res)
+        # self.hwp.SaveAs(os.path.abspath(self.sav_path))
+        
+        print(self.sav_path)
+        print(os.path.abspath(self.sav_path))
+              
+        self.hwp.SaveAs(os.path.abspath(self.sav_path), "HWPX", "lock:none")
+        self.hwp.Quit()
