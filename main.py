@@ -5,7 +5,7 @@ from utils.config import Config
 from hwp.run_hwp import MakeRes
 
 
-docs = load_pdf('./sample/test.pdf')
+docs = load_pdf('./files/test.pdf')
 
 
 # 1. Chain 인스턴스 생성 및 체인 초기화

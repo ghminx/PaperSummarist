@@ -2,4 +2,4 @@
 .env
 
 # Scratch 파일
-.scratch
+scratch.py
