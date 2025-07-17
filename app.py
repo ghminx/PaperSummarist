@@ -5,6 +5,8 @@ from model.question import summary_questions
 from utils.config import Config
 from hwp.run_hwp import MakeResST
 import tempfile
+from datetime import datetime
+import os 
 
 # 기본 설정
 st.set_page_config(page_title="논문 요약기")
@@ -36,6 +38,10 @@ if st.button('요약 실행'):
             print(f"🔎 {key} 처리 중...")
             section_summaries[key] = run_chain(chain, question, docs)
 
+        date = {'날짜' : datetime.now().strftime("%Y.%m.%d")}
+
+        section_summaries=date | section_summaries 
+
         st.success("✅ 요약 완료!")
         
         # 한글 
@@ -45,14 +51,15 @@ if st.button('요약 실행'):
         # 임시폴더(Temp)에 저장된 파일을 읽음 
         with open(hwpx_path, "rb") as f:
             hwpx_data = f.read()
+            
+        file_basename = os.path.splitext(uploaded_file.name)[0]
+        file_name_for_download = f"{file_basename}_요약.hwp"
 
         st.download_button(
-            label="📥 한글 파일 다운로드 (.hwpx)",
+            label="📥 한글 파일 다운로드 (.hwp)",
             data=hwpx_data,
-            file_name="논문요약.hwpx",
-            mime="application/hancom.hwpx"
+            file_name=file_name_for_download,
+            mime="application/hancom.hwp"
         )
         
         
-with open('./hwp/frame.hwp', "rb") as f:
-    hwpx_data = f.read()

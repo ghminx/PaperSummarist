@@ -45,11 +45,11 @@ class MakeRes():
         self.insert_word(self.res)
         # self.hwp.SaveAs(os.path.abspath(self.sav_path))
         
-        print(self.sav_path)
-        print(os.path.abspath(self.sav_path))
+        # print(self.sav_path)
+        # print(os.path.abspath(self.sav_path))
               
-        self.hwp.SaveAs(os.path.abspath(self.sav_path), "HWPX", "lock:none")
-        self.hwp.Quit()
+        # self.hwp.SaveAs(os.path.abspath(self.sav_path), "HWP", "lock:none")
+        # self.hwp.Quit()
         
 
 class MakeResST():
@@ -84,9 +84,9 @@ class MakeResST():
     def run_and_return_file(self):
         self.insert_word()
 
-        with tempfile.NamedTemporaryFile(suffix=".hwpx", delete=False) as tmp:
+        with tempfile.NamedTemporaryFile(suffix=".hwp", delete=False) as tmp:
             tmp_path = tmp.name
 
-        self.hwp.SaveAs(os.path.abspath(tmp_path), "HWPX", "lock:none")
+        self.hwp.SaveAs(os.path.abspath(tmp_path), "HWP", "lock:none")
         self.hwp.Quit()
         return tmp_path
