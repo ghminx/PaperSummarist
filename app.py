@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.pdf_loader import load_pdf
+from utils.format import format_bullet_text
 from model.chain import Chain, run_chain
 from model.question import summary_questions
 from utils.config import Config
@@ -32,15 +33,27 @@ if st.button('요약 실행'):
         # 2. 파일 경로 기반으로 PDF 텍스트 로드
         docs = load_pdf(tmp_path)
         
-        print("🔹 전체 문서 요약 처리 중...")
+        status_placeholder = st.empty()
+        
         section_summaries = {}
-        for key, question in summary_questions.items():
-            print(f"🔎 {key} 처리 중...")
-            section_summaries[key] = run_chain(chain, question, docs)
+        progress = st.progress(0)
+        status_placeholder = st.empty()
 
+        for i, (key, q) in enumerate(summary_questions.items(), 1):
+            status_placeholder.text(f"🔎 {key} 처리 중...")
+            progress.progress(i / len(summary_questions))
+            section_summaries[key] = run_chain(chain, q, docs)
+
+        # 프로그래스바, 텍스트 삭제
+        progress.empty()
+        status_placeholder.empty()
+        
         date = {'날짜' : datetime.now().strftime("%Y.%m.%d")}
 
         section_summaries=date | section_summaries 
+
+        for key in section_summaries:
+            section_summaries[key] = format_bullet_text(section_summaries[key])
 
         st.success("✅ 요약 완료!")
         

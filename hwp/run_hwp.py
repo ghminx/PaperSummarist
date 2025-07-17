@@ -40,9 +40,32 @@ class MakeRes():
             for field in res.columns:
                 self.hwp.PutFieldText(f"{field}{{{{{i}}}}}", str(res[field].iloc[i]))  
 
+    def remove_words(self):
+        self.hwp.HAction.GetDefault("ReplaceDlg", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HAction.Execute("ReplaceDlg", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HAction.GetDefault("AllReplace", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HParameterSet.HFindReplace.Direction = self.hwp.FindDir("Forward")
+        self.hwp.HParameterSet.HFindReplace.FindString = "*"
+        self.hwp.HParameterSet.HFindReplace.ReplaceString = ""
+        self.hwp.HParameterSet.HFindReplace.ReplaceMode = 1
+        self.hwp.HParameterSet.HFindReplace.IgnoreMessage = 1
+        self.hwp.HAction.Execute("AllReplace", self.hwp.HParameterSet.HFindReplace.HSet)
+
+    def line(self):
+        self.hwp.HAction.GetDefault("ReplaceDlg", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HAction.Execute("ReplaceDlg", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HAction.GetDefault("AllReplace", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HParameterSet.HFindReplace.Direction = self.hwp.FindDir("Forward")
+        self.hwp.HParameterSet.HFindReplace.FindString = "###"
+        self.hwp.HParameterSet.HFindReplace.ReplaceString = "\n"
+        self.hwp.HParameterSet.HFindReplace.ReplaceMode = 1
+        self.hwp.HParameterSet.HFindReplace.IgnoreMessage = 1
+        self.hwp.HAction.Execute("AllReplace", self.hwp.HParameterSet.HFindReplace.HSet)
                 
     def run(self):
         self.insert_word(self.res)
+        self.remove_words()
+        self.line()
         # self.hwp.SaveAs(os.path.abspath(self.sav_path))
         
         # print(self.sav_path)
@@ -81,9 +104,34 @@ class MakeResST():
             for field in self.res.columns:
                 self.hwp.PutFieldText(f"{field}{{{{{i}}}}}", str(self.res[field].iloc[i]))
 
+    def remove_words(self):
+        self.hwp.HAction.GetDefault("ReplaceDlg", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HAction.Execute("ReplaceDlg", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HAction.GetDefault("AllReplace", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HParameterSet.HFindReplace.Direction = self.hwp.FindDir("Forward")
+        self.hwp.HParameterSet.HFindReplace.FindString = "*"
+        self.hwp.HParameterSet.HFindReplace.ReplaceString = ""
+        self.hwp.HParameterSet.HFindReplace.ReplaceMode = 1
+        self.hwp.HParameterSet.HFindReplace.IgnoreMessage = 1
+        self.hwp.HAction.Execute("AllReplace", self.hwp.HParameterSet.HFindReplace.HSet)
+
+    def line(self):
+        self.hwp.HAction.GetDefault("ReplaceDlg", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HAction.Execute("ReplaceDlg", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HAction.GetDefault("AllReplace", self.hwp.HParameterSet.HFindReplace.HSet)
+        self.hwp.HParameterSet.HFindReplace.Direction = self.hwp.FindDir("Forward")
+        self.hwp.HParameterSet.HFindReplace.FindString = "###"
+        self.hwp.HParameterSet.HFindReplace.ReplaceString = "\n"
+        self.hwp.HParameterSet.HFindReplace.ReplaceMode = 1
+        self.hwp.HParameterSet.HFindReplace.IgnoreMessage = 1
+        self.hwp.HAction.Execute("AllReplace", self.hwp.HParameterSet.HFindReplace.HSet)
+                
+                
     def run_and_return_file(self):
         self.insert_word()
-
+        self.remove_words()
+        self.line()
+        
         with tempfile.NamedTemporaryFile(suffix=".hwp", delete=False) as tmp:
             tmp_path = tmp.name
 
