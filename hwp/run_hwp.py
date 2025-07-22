@@ -24,7 +24,7 @@ class MakeRes():
         
     def hwp_open(self):
         hwp = win32.gencache.EnsureDispatch("hwpframe.hwpobject")
-        hwp.XHwpWindows.Item(0).Visible = True
+        hwp.XHwpWindows.Item(0).Visible = False
         hwp.RegisterModule("FilePathCheckDLL", "FilePathCheckerModule")
         hwp.RegisterModule("Clipboard", "")  
         hwp.Open(os.path.abspath(self.frame_path))
@@ -66,13 +66,10 @@ class MakeRes():
         self.insert_word(self.res)
         self.remove_words()
         self.line()
-        # self.hwp.SaveAs(os.path.abspath(self.sav_path))
-        
-        # print(self.sav_path)
-        # print(os.path.abspath(self.sav_path))
+        self.hwp.SaveAs(os.path.abspath(self.sav_path))
               
-        # self.hwp.SaveAs(os.path.abspath(self.sav_path), "HWP", "lock:none")
-        # self.hwp.Quit()
+        self.hwp.SaveAs(os.path.abspath(self.sav_path), "HWP", "lock:none")
+        self.hwp.Quit()
         
 
 class MakeResST():
