@@ -65,7 +65,7 @@ streamlit run app.py
 
 ### 📅 참고 설정
 
-`utils/config.py` 파일에 OpenAI API 키를 설정해야 합니다:
+`utils/config.py` 파일에 OpenAI API 키를 설정필요
 
 ```python
 class Config:
